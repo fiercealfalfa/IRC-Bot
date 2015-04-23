@@ -17,8 +17,10 @@ password = settings['botpass']
 #Respond to server pings
 def ping():
 	irc.send("PONG " + ircmsg.split()[1] + "\r\n")
-	 
-	
+# For the bot to request OP from Chanserv
+def opbot():
+	irc.send("MODE " + channel + " +o " + botnick + "\r\n")
+	print "I tried to OP myself", "PRIVMSG chanserv OP "+ channel + " " + botnick + "\r\n"
 	
 #Send Messages
 def sendmsg(chan , msg):
@@ -48,14 +50,16 @@ time.sleep(5)
 irc.send("PRIVMSG NickServ identify %s %s\r\n" % (botnick, password))
 time.sleep(5)
 irc.send("JOIN " + channel +"\n")
-
-
+time.sleep(5)
+# Trying to get both to give itself OPs
+#irc.send("PRIVMSG ChanServ OP " + channel + " "+ botnick + "\r\n")
+#print "what rhat " + ("PRIVMSG ChanServ +o " + channel + " "+ botnick + "\r\n")
 
 while 1:
 	ircmsg = irc.recv(2048) #receiving info from IRC
 	ircmsg = ircmsg.strip('\n\r')
 	print(ircmsg)
-	
+	#opbot() #- We are going to add code to detect deopping and call this function when it works
 	if ircmsg.find("PING :") != -1:
 		ping()
 	
