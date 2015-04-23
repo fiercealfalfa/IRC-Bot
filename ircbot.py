@@ -17,7 +17,7 @@ password = settings['botpass']
 #Respond to server pings
 def ping():
 	irc.send("PONG " + ircmsg.split()[1] + "\r\n")
-	print("PONG " + ircmsg.split()[1] + "\r\n") 
+	 
 	
 	
 #Send Messages
