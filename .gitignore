@@ -2,6 +2,9 @@
 Thumbs.db
 ehthumbs.db
 
+#Bot Settings and password file
+ircpasswords.py
+
 # Folder config file
 Desktop.ini
 
