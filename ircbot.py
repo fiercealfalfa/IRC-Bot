@@ -33,7 +33,15 @@ def joinchan(chan):
 #Simple Reply to Hello 
 def hello():
 	irc.send("PRIVMSG "+ channel +" :Hello!\n")
+	
+def reg():
+	irc.send("PRIVMSG NickServ :identify %s %s \r\n" % (botnick, password))
+	print("PRIVMSG NickServ :identify %s %s \r\n" % (botnick, password))
+	
+def joinmainchannel():
+	irc.send("JOIN " + channel +"\n")
 
+	
 #Connecting to server, joining channel and authenticating
 
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -46,14 +54,10 @@ time.sleep(5)
 irc.send("NICK "+ botnick +"\n")
 irc.send("USER "+ botnick +" "+ botnick +" "+ botnick +" :devCodeIRCbot - A work in Progress")
 
-time.sleep(5)
-irc.send("PRIVMSG NickServ identify %s %s\r\n" % (botnick, password))
-time.sleep(5)
+
+
+time.sleep(30)
 irc.send("JOIN " + channel +"\n")
-time.sleep(5)
-# Trying to get both to give itself OPs
-#irc.send("PRIVMSG ChanServ OP " + channel + " "+ botnick + "\r\n")
-#print "what rhat " + ("PRIVMSG ChanServ +o " + channel + " "+ botnick + "\r\n")
 
 while 1:
 	ircmsg = irc.recv(2048) #receiving info from IRC
@@ -63,5 +67,11 @@ while 1:
 	if ircmsg.find("PING :") != -1:
 		ping()
 	
+	if ircmsg.find("This nickname is registered.") != -1:
+		reg()
+	
+	if ircmsg.find("You are now identified") != -1:
+		joinmainchannel()
+		
 	if ircmsg.find(":Hello "+ botnick)!= -1:
 		hello()
